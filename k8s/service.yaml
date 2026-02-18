@@ -1,14 +1,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sample-app
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"sample-app"},"name":"sample-app","namespace":"apps"},"spec":{"ports":[{"name":"http","port":80,"targetPort":3000}],"selector":{"app":"sample-app"},"type":"ClusterIP"}}
+  creationTimestamp: "2026-02-17T23:59:51Z"
   labels:
     app: sample-app
+  name: sample-app
+  namespace: apps
+  resourceVersion: "1037"
+  uid: 6fc7b608-3e6c-484e-b649-e20199aa5670
 spec:
-  type: ClusterIP
-  selector:
-    app: sample-app
+  clusterIP: 10.96.84.33
+  clusterIPs:
+  - 10.96.84.33
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
   ports:
   - name: http
     port: 80
+    protocol: TCP
     targetPort: 3000
+  selector:
+    app: sample-app
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

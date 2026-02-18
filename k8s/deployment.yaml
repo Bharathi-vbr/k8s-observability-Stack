@@ -1,41 +1,98 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sample-app
+  annotations:
+    deployment.kubernetes.io/revision: "3"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"sample-app"},"name":"sample-app","namespace":"apps"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"sample-app"}},"template":{"metadata":{"labels":{"app":"sample-app"}},"spec":{"containers":[{"image":"sample-app:latest","imagePullPolicy":"IfNotPresent","livenessProbe":{"httpGet":{"path":"/health","port":3000},"initialDelaySeconds":10,"periodSeconds":10},"name":"sample-app","ports":[{"containerPort":3000}],"readinessProbe":{"httpGet":{"path":"/health","port":3000},"initialDelaySeconds":5,"periodSeconds":5},"resources":{"limits":{"cpu":"200m","memory":"192Mi"},"requests":{"cpu":"50m","memory":"96Mi"}}}]}}}}
+  creationTimestamp: "2026-02-17T23:59:51Z"
+  generation: 3
   labels:
     app: sample-app
+  name: sample-app
+  namespace: apps
+  resourceVersion: "4077"
+  uid: 4c291da6-cc7f-4082-8a6e-e1e63528f77b
 spec:
+  progressDeadlineSeconds: 600
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: sample-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2026-02-18T00:34:42Z"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "3000"
+        prometheus.io/scrape: "true"
       labels:
         app: sample-app
     spec:
       containers:
-      - name: sample-app
-        image: sample-app:latest
+      - image: sample-app:latest
         imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 3000
         livenessProbe:
+          failureThreshold: 3
           httpGet:
             path: /health
             port: 3000
+            scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: sample-app
+        ports:
+        - containerPort: 3000
+          protocol: TCP
         readinessProbe:
+          failureThreshold: 3
           httpGet:
             path: /health
             port: 3000
+            scheme: HTTP
           initialDelaySeconds: 5
           periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
         resources:
-          requests:
-            cpu: "50m"
-            memory: "96Mi"
           limits:
-            cpu: "200m"
-            memory: "192Mi"
+            cpu: 200m
+            memory: 192Mi
+          requests:
+            cpu: 50m
+            memory: 96Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2026-02-17T23:59:59Z"
+    lastUpdateTime: "2026-02-17T23:59:59Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-02-17T23:59:51Z"
+    lastUpdateTime: "2026-02-18T00:34:50Z"
+    message: ReplicaSet "sample-app-69b5dfdc4d" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 3
+  readyReplicas: 1
+  replicas: 1
+  terminatingReplicas: 0
+  updatedReplicas: 1
