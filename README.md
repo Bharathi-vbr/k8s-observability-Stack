@@ -215,6 +215,7 @@ kubectl get svc -n observability
 ```bash
 kubectl get secret grafana -n observability -o jsonpath="{.data.admin-password}" | base64 --decode; echo
 ```
+<img width="1460" height="696" alt="Screenshot 2026-02-17 at 6 56 37 PM" src="https://github.com/user-attachments/assets/c0fb39be-a1e1-4498-a312-a4c1aba49a14" />
 
 ---
 
