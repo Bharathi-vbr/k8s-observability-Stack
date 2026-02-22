@@ -1,5 +1,9 @@
 # 🚀 Setup Complete Kubernetes Observability Stack
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/Bharathi-vbr/k8s-observability-Stack?style=social&label=Stars)](https://github.com/Bharathi-vbr/k8s-observability-Stack)
+
+
 **Quick Summary:** Install Docker → kind → kubectl → Helm → Prometheus → Grafana → Port-forward → Access dashboards
 
 ---
